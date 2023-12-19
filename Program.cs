@@ -21,7 +21,23 @@ builder.Services.AddDbContext<PustokDBContext>(options =>
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
     opt.Password.RequireNonAlphanumeric = false;
     opt.Password.RequiredLength = 4;
-    }).AddDefaultTokenProviders().AddEntityFrameworkStores<PustokDBContext>();
+}).AddDefaultTokenProviders().AddEntityFrameworkStores<PustokDBContext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = new PathString("/Auth/Login");
+    options.LogoutPath = new PathString("/Auth/Logout");
+    options.AccessDeniedPath = new PathString("/Home/AccessDenied");
+
+    options.Cookie = new()
+    {
+        Name = "IdentityCookie",
+        HttpOnly = true,
+        SameSite = SameSiteMode.Lax,
+        SecurePolicy = CookieSecurePolicy.Always
+    };
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+});
 builder.Services.AddSession();
 //*
 builder.Services.AddScoped<LayoutService>();
@@ -42,6 +58,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseSession();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

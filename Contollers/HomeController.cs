@@ -132,5 +132,9 @@ namespace SitePustok.Contollers
         //    });
         //    //HttpContext.Response.Cookies.Delete(key);
         //}
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

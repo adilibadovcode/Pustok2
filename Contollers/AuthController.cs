@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SitePustok.Helpers;
 using SitePustok.Models;
 using SitePustok.ViewModels.AuthVM;
 
@@ -63,8 +64,6 @@ namespace SitePustok.Contollers
 
 
 
-
-
         public IActionResult Register()
         {
             return View();
@@ -76,12 +75,13 @@ namespace SitePustok.Contollers
             {
                 return View(vm);
             }
-            var result = await _userManager.CreateAsync(new AppUser
+            var user = new AppUser
             {
                 Fullname = vm.Fullname,
                 Email = vm.Email,
                 UserName = vm.Username
-            }, vm.Password);
+            };
+            var result = await _userManager.CreateAsync(user, vm.Password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -90,13 +90,36 @@ namespace SitePustok.Contollers
                 }
                 return View(vm);
             }
-            return View();
+            var roleResult = await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
+            if (!roleResult.Succeeded)
+            {
+                ModelState.AddModelError("", "Something went wrong. Please contact Us");
+                return View(vm);
+            }
+            return RedirectToAction("Index", "Home");
         }
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-
+        public async Task<bool> CreateRoles()
+        {
+            foreach (var item in Enum.GetValues(typeof(Roles)))
+            {
+                if (!await _roleManager.RoleExistsAsync(item.ToString()))
+                {
+                    var result = await _roleManager.CreateAsync(new IdentityRole
+                    {
+                        Name = item.ToString()
+                    });
+                    if (!result.Succeeded)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }

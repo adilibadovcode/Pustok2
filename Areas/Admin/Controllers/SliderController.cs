@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SitePustok.Contexts;
 using SitePustok.Models;
@@ -7,6 +8,8 @@ using SitePustok.ViewModels.SliderVM;
 namespace SitePustok.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,Moderator")]
+    //[AllowAnonymous]
     public class SliderController : Controller
     {
         PustokDBContext _db { get; }

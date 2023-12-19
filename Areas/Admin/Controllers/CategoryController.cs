@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SitePustok.Contexts;
 using SitePustok.Models;
@@ -8,7 +9,9 @@ using SitePustok.ViewModels.TagVM;
 namespace SitePustok.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	public class CategoryController : Controller
+    [Authorize(Roles = "SuperAdmin,Admin,Moderator")]
+
+    public class CategoryController : Controller
 	{
 		PustokDBContext _db { get; }
 

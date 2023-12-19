@@ -5,10 +5,13 @@ using SitePustok.Contexts;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SitePustok.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,Moderator")]
+
     public class BlogController : Controller
     {
         PustokDBContext _db { get; }

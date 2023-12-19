@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SitePustok.Contexts;
 using SitePustok.Models;
-using SitePustok.ViewModels.AuthorVM;
 using SitePustok.ViewModels.AuthorVM;
 
 namespace SitePustok.Areas.Admin.Controllers
 {
     [Area("Admin")]
-
+    [Authorize(Roles ="SuperAdmin,Admin,Moderator")]
     public class AuthorController : Controller
 	{
 		PustokDBContext _db { get; }

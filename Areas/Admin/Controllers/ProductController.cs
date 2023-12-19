@@ -8,10 +8,13 @@ using SitePustok.Helpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Drawing;
 using NuGet.Packaging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SitePustok.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin,Moderator")]
+
     public class ProductController : Controller
     {
         PustokDBContext _db { get; }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SitePustok")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea95b257a305fe78f4341f91b093899bdd8afc03")]
 [assembly: System.Reflection.AssemblyProductAttribute("SitePustok")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SitePustok")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

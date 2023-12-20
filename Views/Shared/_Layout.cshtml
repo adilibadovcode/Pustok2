@@ -45,22 +45,11 @@
                             <div class="main-navigation flex-lg-right">
                                 <ul class="main-menu menu-right ">
                                     <li class="menu-item has-children">
-                                        <a href="javascript:void(0)">
-                                            Home
-                                        </a>
-
+                                        <a asp-action="Index" asp-controller="Home">Home</a>
                                     </li>
                                     <!-- Shop -->
                                     <li class="menu-item has-children mega-menu">
-                                        <a href="javascript:void(0)">
-                                            shop
-                                        </a>
-                                    </li>
-                                    <!-- Pages -->
-                                    <li class="menu-item has-children">
-                                        <a href="javascript:void(0)">
-                                            Pages
-                                        </a>
+                                        <a asp-action="Index" asp-controller="Product">shop</a>
                                     </li>
                                     <!-- Blog -->
                                     <li class="menu-item has-children mega-menu">
@@ -217,10 +206,10 @@
                                     <div class="login-block">
                                         @if (User.Identity.IsAuthenticated)
                                         {
-                                           <div class="d-flex">
+                                            <div class="d-flex">
                                                 <p class="pe-3" style="font-weight:600;text-transform:uppercase"> @User.Identity.Name</p>
-                                                <a asp-action="Logout" asp-controller="Auth"> <i  class="fa-solid fa-right-from-bracket mx-2"></i></a>
-                                           </div>
+                                                <a asp-action="Logout" asp-controller="Auth"> <i class="fa-solid fa-right-from-bracket mx-2"></i></a>
+                                            </div>
                                         }
                                         else
                                         {

@@ -72,7 +72,7 @@
                                         <a asp-action="Slider" asp-controller="Admin">Admin</a>
                                     </li>
                                     <li class="menu-item">
-                                        <a asp-action="AccountDetails" asp-controller="Admin">Settings</a>
+                                        <a asp-action="AccountDetails" asp-controller="Admin" asp-route-Name="@User.Identity.Name">Settings</a>
                                     </li>
                                 </ul>
                             </div>

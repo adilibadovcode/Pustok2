@@ -16,9 +16,9 @@ builder.Services.AddDbContext<PustokDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSql"));
 }).AddIdentity<AppUser, IdentityRole>(opt =>
 {
-    opt.SignIn.RequireConfirmedEmail = false;
+    opt.SignIn.RequireConfirmedEmail = true;
     opt.User.RequireUniqueEmail = true;
-    opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789._";
+    opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._";
     opt.Lockout.MaxFailedAccessAttempts = 10;
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
     opt.Password.RequireNonAlphanumeric = false;

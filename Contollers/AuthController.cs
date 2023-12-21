@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SitePustok.ExternalServices.Implements;
+using SitePustok.ExternalServices.Interfaces;
 using SitePustok.Helpers;
 using SitePustok.Models;
 using SitePustok.ViewModels.AuthVM;
@@ -11,16 +13,22 @@ namespace SitePustok.Contollers
         SignInManager<AppUser> _signInManager { get; }
         UserManager<AppUser> _userManager { get; }
         RoleManager<IdentityRole> _roleManager { get; }
-
+        IEmailService _emailService { get; }
         public AuthController(SignInManager<AppUser> signInManager,
             UserManager<AppUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IEmailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
-
+        public IActionResult SendMail()
+        {
+            _emailService.Send("narmin.shivakhanova@code.edu.az", "Welcome Pustok", "Subject: Welcome to Site A Pustok - Your Gateway to a World of Knowledge!\r\n\r\nDear [Narmin],\r\n\r\nWelcome to Site A Pustok, your new destination for all things literature and knowledge! We are thrilled to have you on board and excited to embark on this journey together.\r\n\r\nAt Site A Pustok, we believe in the power of words to inspire, educate, and entertain. Whether you're a passionate reader, a knowledge seeker, or someone looking for a literary adventure, you've come to the right place.\r\n\r\nHere's what you can expect from your experience at Site A Pustok:\r\n\r\n1. **Diverse Collection:** Explore our extensive library featuring a diverse collection of books spanning various genres. From timeless classics to contemporary bestsellers, there's something for every taste.\r\n\r\n2. **Personalized Recommendations:** Our recommendation engine is designed to understand your preferences and suggest books tailored to your interests. Get ready to discover new favorites!\r\n\r\n3. **Community of Readers:** Join our vibrant community of readers and engage in discussions, book clubs, and events. Share your thoughts, connect with fellow book lovers, and expand your literary horizons.\r\n\r\n4. **Exclusive Offers:** As a valued member of Site A Pustok, you'll enjoy exclusive discounts, promotions, and early access to new releases. We believe in rewarding our community for their passion for reading.\r\n\r\nTo get started, simply log in to your account and begin exploring the rich tapestry of literature waiting for you. If you have any questions or need assistance, our support team is here to help.\r\n\r\nThank you for choosing Site A Pustok as your literary companion. We look forward to being a part of your reading adventures!\r\n\r\nHappy reading!\r\n\r\nBest regards,\r\n\r\n[Adil]\r\nSite A Pustok Team");
+            return Ok();
+        }
         public IActionResult Login()
         {
             return View();
@@ -96,7 +104,36 @@ namespace SitePustok.Contollers
                 ModelState.AddModelError("", "Something went wrong. Please contact Us");
                 return View(vm);
             }
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            _emailService.Send(user.Email, "Email confirmation",
+                "Confirm Email");
             return RedirectToAction("Index", "Home");
+        }
+        //public async Task<IActionResult> SendConfirmationEmail(AppUser user)
+        //{
+        //    await _sendConfirmation(user);
+        //    return Content("email sent");
+        //}
+        //async Task _sendConfirmation(AppUser user)
+        //{
+        //    var token = await _userManager.ConfirmEmailAsync(await _userManager.FindByNameAsync(kdeousername), token);
+        //    var link = Url.Action(
+        //        "EmailConfirmed", "Auth",
+        //        new
+        //        {
+        //            token = token,
+        //            username = user.UserName
+        //        }, Request.Scheme
+        //        );
+        //    _emailService.Send(user.Email, "Email confirmation",
+        //     "Confirm Email");
+        //}
+        public async Task<IActionResult> EmailConfirmed(string token, string username)
+        {
+            var result = await _userManager.ConfirmEmailAsync(await _userManager.FindByNameAsync(username), token);
+            if (result.Succeeded) return Ok();
+            return Problem();
+
         }
         public async Task<IActionResult> Logout()
         {

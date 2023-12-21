@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using SitePustok.Contexts;
+using SitePustok.ExternalServices.Implements;
+using SitePustok.ExternalServices.Interfaces;
 using SitePustok.Helpers;
 using SitePustok.Models;
 
@@ -38,6 +40,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(30);
 });
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddSession();
 //*
 builder.Services.AddScoped<LayoutService>();

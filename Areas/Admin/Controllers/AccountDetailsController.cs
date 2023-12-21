@@ -62,5 +62,9 @@ namespace SitePustok.Areas.Admin.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        //public async Task<IActionResult> Delete(int? Id)
+        //{
+
+        //}
     }
 }
